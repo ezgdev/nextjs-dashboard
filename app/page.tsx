@@ -8,7 +8,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       <header className="bg-blue-600 h-24 rounded-b-lg">
-        <AcmeLogo />
+                <div className="w-32 text-white md:w-40 flex items-center h-full ml-6">
+                  <AcmeLogo />
+                </div>
       </header>
       <main className="p-8">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
