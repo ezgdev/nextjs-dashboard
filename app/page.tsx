@@ -6,7 +6,7 @@ import { lusitana } from '@/app/ui/fonts';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bog-white">
       <header className="bg-blue-600 h-24 rounded-b-lg">
                 <div className="w-32 text-white md:w-40 flex items-center h-full ml-6">
                   <AcmeLogo />
