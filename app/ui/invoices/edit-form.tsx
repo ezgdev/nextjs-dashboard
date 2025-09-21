@@ -20,7 +20,7 @@ export default function EditInvoiceForm({
   customers: CustomerField[];
 }) {
   // this not necessary, and invoice.id is the argument need
-  const initialState = { message: null, errors: {} };
+  const initialState = { message: '', errors: {} as { customerId?: string[]; amount?: string[]; status?: string[] } };
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   const [state, dispatch] = useFormState(updateInvoiceWithId, initialState)
 
