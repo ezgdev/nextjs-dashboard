@@ -1,4 +1,5 @@
 import { createClient} from '@vercel/postgres';
+import { notFound } from 'next/navigation';
 import {
   CustomerField,
   CustomersTable,
@@ -157,7 +158,7 @@ export async function fetchInvoicesPages(query: string) {
   }
 }
 
-export async function fetchInvoiceById(id: string) {
+export async function fetchInvoiceById(id: string): Promise<InvoiceForm> {
   noStore();
   const client = createClient();
   await client.connect();
@@ -172,16 +173,21 @@ export async function fetchInvoiceById(id: string) {
       WHERE invoices.id = ${id};
     `;
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
+    const invoice = data.rows.map((row) => ({
+      ...row,
       // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
+      amount: row.amount / 100,
     }));
 
-    return invoice[0] ?? null;
+    if (!invoice[0]) {
+      // aquí garantizamos que nunca se devuelva undefined
+      notFound(); // o: throw new Error("Invoice not found");
+    }
+
+    return invoice[0];
   } catch (error) {
     console.error('Database Error:', error);
-    return null;
+    throw new Error('Failed to fetch invoice');
   }
 }
 
