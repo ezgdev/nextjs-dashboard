@@ -2,6 +2,7 @@ import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers, fetchInvoiceById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
+import type { InvoiceForm } from '@/app/lib/definitions';
  
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -13,6 +14,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!invoice) {
     return notFound();
   }
+
+  const safeInvoice: InvoiceForm = invoice;
 
   return (
     <main>
@@ -26,7 +29,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      <Form invoice={invoice} customers={customers} />
+       <Form invoice={safeInvoice} customers={customers} />
     </main>
   );
 }
