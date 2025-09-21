@@ -162,6 +162,7 @@ export async function fetchInvoiceById(id: string): Promise<InvoiceForm> {
   noStore();
   const client = createClient();
   await client.connect();
+
   try {
     const data = await client.sql<InvoiceForm>`
       SELECT
@@ -173,20 +174,17 @@ export async function fetchInvoiceById(id: string): Promise<InvoiceForm> {
       WHERE invoices.id = ${id};
     `;
 
-    const invoice = data.rows.map((row) => ({
+    const rows = data.rows.map((row) => ({
       ...row,
-      // Convert amount from cents to dollars
       amount: row.amount / 100,
     }));
 
-    if (!invoice[0]) {
-      // aquí garantizamos que nunca se devuelva undefined
-      notFound(); // o: throw new Error("Invoice not found");
-    }
+    const first = rows[0];         
+    if (!first) notFound();        
 
-    return invoice[0];
-  } catch (error) {
-    console.error('Database Error:', error);
+    return first;                 
+  } catch (err) {
+    console.error('Database Error:', err);
     throw new Error('Failed to fetch invoice');
   }
 }
